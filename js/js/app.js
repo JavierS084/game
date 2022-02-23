@@ -16,12 +16,23 @@ var Game = function(x, y, w, h){
     var rightPressed = false;
     var leftPressed = false;
 
+    var brickRow = 3;
+    var brickColumn = 8;
+    
+    var brickW = 85;
+    var brickH = 20;
+    var brickP = 20;
+    var brickT = 30;
+    var brickL = 40;
+    var bricks = [];
 
-
+    
+    
     this.dibujar = function(ctx) {
-       
+        
         this.bola(ctx);
         this.paleta(ctx);
+        this.brick(ctx);
         this.mover();
          
     }
@@ -57,13 +68,40 @@ var Game = function(x, y, w, h){
             leftPressed = false;
         }
     }
-
+    
     this.paleta = function(ctx){
         ctx.beginPath();
         ctx.fillRect(paletaX, this.height - paletaH, paletaW, paletaH);
         ctx.fillStyle = "#0095DD";
         ctx.fill();
         ctx.closePath();
+        
+    }
+
+    for( i = 0; i < brickColumn; i++){
+        bricks[i] = [];
+        for( h = 0; h < brickRow; h++){
+            bricks[i][h] = {a: 0, b: 0};
+        }
+    }
+    
+    this.brick = function(ctx){
+        for(i = 0; i < brickColumn; i++) {
+            for(h = 0; h < brickRow; h++) {
+                var brickX = (i*(brickW + brickP)) + brickL;
+                var brickY = (h*(brickH + brickP)) + brickT;
+
+                bricks[i][h].a = brickX;
+                bricks[i][h].b = brickY;
+
+                ctx.beginPath();
+                ctx.rect(brickX, brickY, brickW, brickH);
+                ctx.fillStyle = "#0095DD";
+                ctx.fill();
+                ctx.closePath();
+
+            }
+        }
 
     }
 
@@ -75,13 +113,26 @@ var Game = function(x, y, w, h){
             dx = -dx;
         }
         
-        this.x += dx;
 
+        /* esto permite que rebote de arriba abajo
         if (this.y + radius > this.height || this.y - radius < 0){
             dy = -dy;
         }
         this.y -= dy;
+        */
 
+        if(this.y + dy < radius) {
+            dy = -dy;
+
+        } else if(this.y + dy > this.height - radius) {
+            if(this.x > paletaX && this.x < paletaX + paletaW) {
+                dy = -dy;
+            }
+            else {
+                alert("GAME OVER");
+                document.location.reload();
+            }
+        }
 
 
         if(rightPressed && paletaX < this.width - paletaW) {
@@ -90,6 +141,8 @@ var Game = function(x, y, w, h){
         else if(leftPressed && paletaX > 0) {
             paletaX -= 7;
         }
+        this.x += dx;
+        this.y += dy;
 
     }
     
