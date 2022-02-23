@@ -33,6 +33,7 @@ var Game = function(x, y, w, h){
         this.bola(ctx);
         this.paleta(ctx);
         this.brick(ctx);
+        this.collision();
         this.mover();
          
     }
@@ -81,24 +82,44 @@ var Game = function(x, y, w, h){
     for( i = 0; i < brickColumn; i++){
         bricks[i] = [];
         for( h = 0; h < brickRow; h++){
-            bricks[i][h] = {a: 0, b: 0};
+            bricks[i][h] = {a: 0, b: 0, status: 1};
         }
     }
     
     this.brick = function(ctx){
         for(i = 0; i < brickColumn; i++) {
             for(h = 0; h < brickRow; h++) {
-                var brickX = (i*(brickW + brickP)) + brickL;
-                var brickY = (h*(brickH + brickP)) + brickT;
+                if(bricks[i][h].status == 1){
 
-                bricks[i][h].a = brickX;
-                bricks[i][h].b = brickY;
+                    var brickX = (i*(brickW + brickP)) + brickL;
+                    var brickY = (h*(brickH + brickP)) + brickT;
+    
+                    bricks[i][h].a = brickX;
+                    bricks[i][h].b = brickY;
+    
+                    ctx.beginPath();
+                    ctx.rect(brickX, brickY, brickW, brickH);
+                    ctx.fillStyle = "#0095DD";
+                    ctx.fill();
+                    ctx.closePath();
+                }
 
-                ctx.beginPath();
-                ctx.rect(brickX, brickY, brickW, brickH);
-                ctx.fillStyle = "#0095DD";
-                ctx.fill();
-                ctx.closePath();
+            }
+        }
+
+    }
+
+    this.collision = function(){
+        for(i = 0; i < brickColumn; i++){
+            for(h = 0; h < brickRow; h++){
+                var l = bricks[i][h];
+                if(l.status == 1){
+                    
+                    if(this.x > l.a && this.x < l.a + brickW && this.y > l.b && this.y < l.b + brickH){
+                        dy = -dy;
+                        l.status = 0;                        
+                    }
+                }
 
             }
         }
