@@ -53,7 +53,7 @@
                 function animate() {
 
                     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-                game.dibujar(ctx);
+                    game.dibujar(ctx);
 
                     if (playAnimation) {
                         setTimeout(animate, 10);
@@ -70,6 +70,12 @@
                 position: relative;
                 left: 10rem;
             }
+            .buttons{
+                position: relative;
+                left: 35rem;
+                padding: 1rem;
+                
+            }
         </style>
 
         <title></title>
@@ -80,12 +86,12 @@
         <div class="container fluid-content">
             <div class="row mx-auto">
                 
-                <div class="col-md-12 p-2">
+                <div class="col-md-12 p-4">
                     
                     <canvas class="canvas" id="myCanvas" width="900" height="700" style="border: 1px solid #333;"></canvas>
-                    <div class="p-2">
+                    <div class="buttons">
                         <button class="btn btn-success"id="startAnimation">Start</button>
-                        <button class="btn btn-primary id="stopAnimation">Stop</button>
+                        <button class="btn btn-primary" id="stopAnimation">Stop</button>
                     </div>
                 </div>
 

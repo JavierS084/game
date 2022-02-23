@@ -34,6 +34,7 @@ var Game = function(x, y, w, h) {
         this.y -= dy;
          
     }
+    
 
     
 }
