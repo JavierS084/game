@@ -6,7 +6,7 @@ var Game = function(x, y, w, h, c){
     this.height = h;
     this.canvas = c;
 
-    var radius = 30;
+    var radius = 10;
     var dx = 4;
     var dy = 6;
 
@@ -28,6 +28,7 @@ var Game = function(x, y, w, h, c){
     var bricks = [];
 
     var score = 0;
+    var lives = 3;
 
 
     
@@ -39,24 +40,28 @@ var Game = function(x, y, w, h, c){
         this.brick(ctx);
         this.collision();
         this.score(ctx);
+        this.live(ctx);
         this.mover();
-         
+       
+
     }
 
     this.bola = function(ctx){
+        let r = Math.random()*255;
+        let g = Math.random()*255;
+        let b = Math.random()*255;
 
         ctx.beginPath();
-        ctx.fillStyle = "#0095DD";
+        ctx.fillStyle = "rgb("+r+","+g+","+ b+")";
         ctx.arc(this.x, this.y, 10, 0, Math.PI*2);  
         ctx.fill();
         ctx.closePath();
 
     }
 
-
     document.addEventListener("keydown", keyDownHandler, false);
     document.addEventListener("keyup", keyUpHandler, false);
-    document.addEventListener("mousemove", mouseMoveHandler, false);
+ 
 
     function keyDownHandler(e) {
         if(e.keyCode == 39) {
@@ -76,18 +81,10 @@ var Game = function(x, y, w, h, c){
         }
     }
 
-    function mouseMoveHandler(e) {
-        var relativeX = e.clientX - this.canvas;
-        console.log("xc");
-        if(relativeX > 0 && relativeX < this.width) {
-            paletaX = relativeX - this.paletaW/2;
-        }
-    }
-    
     this.paleta = function(ctx){
         ctx.beginPath();
-        ctx.fillRect(paletaX, this.height - paletaH, paletaW, paletaH);
         ctx.fillStyle = "rgb(49, 196, 122)";
+        ctx.fillRect(paletaX, this.height - paletaH, paletaW, paletaH);
         ctx.fill();
         ctx.closePath();
         
@@ -148,10 +145,15 @@ var Game = function(x, y, w, h, c){
     this.score = function(ctx){
         ctx.beginPath();
         ctx.font = "16px Arial";
-        ctx.fillStyle = "#0095DD";
+        ctx.fillStyle = "#13b53c";
         ctx.fillText("Score: "+score, 8, 20);
         ctx.fill();
         ctx.closePath();
+    }
+    this.live = function(ctx){
+        ctx.font = "16px Arial";
+        ctx.fillStyle = "red";
+        ctx.fillText("Lives: "+lives, this.width-65, 20);
     }
 
 
@@ -160,7 +162,6 @@ var Game = function(x, y, w, h, c){
         if (this.x + radius > this.width || this.x - radius < 0){
             dx = -dx;
         }
-        
 
         /* esto permite que rebote de arriba abajo
         if (this.y + radius > this.height || this.y - radius < 0){
@@ -177,11 +178,20 @@ var Game = function(x, y, w, h, c){
                 dy = -dy;
             }
             else {
-                alert("GAME OVER");
-                document.location.reload();
+                lives--;
+                if(!lives){
+
+                    alert("GAME OVER");
+                    document.location.reload();
+                }else{
+                    this.x = this.width/2;
+                    this.y = this.height-30;
+                    dx = 3;
+                    dy = -3;
+                    paletaX = (this.width - paletaW)/2
+                }
             }
         }
-
 
         if(rightPressed && paletaX < this.width - paletaW) {
             paletaX += 7;
@@ -191,9 +201,6 @@ var Game = function(x, y, w, h, c){
         }
         this.x += dx;
         this.y += dy;
-
     }
-    
-
     
 }
