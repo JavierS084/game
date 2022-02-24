@@ -1,9 +1,10 @@
-var Game = function(x, y, w, h){
+var Game = function(x, y, w, h, c){
     this.x = x;
     this.y = y;
 
     this.width = w;
     this.height = h;
+    this.canvas = c;
 
     var radius = 30;
     var dx = 4;
@@ -55,6 +56,7 @@ var Game = function(x, y, w, h){
 
     document.addEventListener("keydown", keyDownHandler, false);
     document.addEventListener("keyup", keyUpHandler, false);
+    document.addEventListener("mousemove", mouseMoveHandler, false);
 
     function keyDownHandler(e) {
         if(e.keyCode == 39) {
@@ -71,6 +73,14 @@ var Game = function(x, y, w, h){
         }
         else if(e.keyCode == 37) {
             leftPressed = false;
+        }
+    }
+
+    function mouseMoveHandler(e) {
+        var relativeX = e.clientX - this.canvas;
+        console.log("xc");
+        if(relativeX > 0 && relativeX < this.width) {
+            paletaX = relativeX - this.paletaW/2;
         }
     }
     
