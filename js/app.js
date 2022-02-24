@@ -26,6 +26,9 @@ var Game = function(x, y, w, h){
     var brickL = 40;
     var bricks = [];
 
+    var score = 0;
+
+
     
     
     this.dibujar = function(ctx) {
@@ -34,6 +37,7 @@ var Game = function(x, y, w, h){
         this.paleta(ctx);
         this.brick(ctx);
         this.collision();
+        this.score(ctx);
         this.mover();
          
     }
@@ -41,8 +45,8 @@ var Game = function(x, y, w, h){
     this.bola = function(ctx){
 
         ctx.beginPath();
-        ctx.arc(this.x, this.y, 10, 0, Math.PI*2);  
         ctx.fillStyle = "#0095DD";
+        ctx.arc(this.x, this.y, 10, 0, Math.PI*2);  
         ctx.fill();
         ctx.closePath();
 
@@ -73,7 +77,7 @@ var Game = function(x, y, w, h){
     this.paleta = function(ctx){
         ctx.beginPath();
         ctx.fillRect(paletaX, this.height - paletaH, paletaW, paletaH);
-        ctx.fillStyle = "#0095DD";
+        ctx.fillStyle = "rgb(49, 196, 122)";
         ctx.fill();
         ctx.closePath();
         
@@ -98,8 +102,8 @@ var Game = function(x, y, w, h){
                     bricks[i][h].b = brickY;
     
                     ctx.beginPath();
-                    ctx.rect(brickX, brickY, brickW, brickH);
                     ctx.fillStyle = "#0095DD";
+                    ctx.rect(brickX, brickY, brickW, brickH);
                     ctx.fill();
                     ctx.closePath();
                 }
@@ -117,7 +121,12 @@ var Game = function(x, y, w, h){
                     
                     if(this.x > l.a && this.x < l.a + brickW && this.y > l.b && this.y < l.b + brickH){
                         dy = -dy;
-                        l.status = 0;                        
+                        l.status = 0; 
+                        score++;   
+                        if(score == brickRow * brickColumn){
+                            alert("YOU WIN");
+                            document.location.reload();
+                        }                    
                     }
                 }
 
@@ -126,6 +135,14 @@ var Game = function(x, y, w, h){
 
     }
 
+    this.score = function(ctx){
+        ctx.beginPath();
+        ctx.font = "16px Arial";
+        ctx.fillStyle = "#0095DD";
+        ctx.fillText("Score: "+score, 8, 20);
+        ctx.fill();
+        ctx.closePath();
+    }
 
 
     this.mover = function() {
