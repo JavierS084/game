@@ -13,8 +13,9 @@
                 var canvas = $("#myCanvas");
                 var ctx = canvas.get(0).getContext("2d");
                 
-                var y = 100;
-                var x = 100;
+                var y = 250;
+                var x = 50;
+                var canvasOffsetLeft = canvas.offsetLef;
                 
                 canvas.width = 900;
                 canvas.height = 700;
@@ -44,7 +45,7 @@
                 });
                 
                 
-                let game = new Game(x, y, canvasWidth, canvasHeight );
+                let game = new Game(x, y, canvasWidth, canvasHeight, canvasOffsetLeft);
 
                 function animate() {
 
@@ -52,7 +53,7 @@
                     game.dibujar(ctx);
 
                     if (playAnimation) {
-                        setTimeout(animate, 10);
+                        setTimeout(animate, 15);
                     };
                 };
                 animate();  
@@ -66,6 +67,7 @@
             .canvas{
                 position: relative;
                 left: 10rem;
+                border-radius: 5px;
             }
             .buttons{
                 position: relative;
@@ -85,7 +87,7 @@
                 
                 <div class="col-md-8 p-4">
                     
-                    <canvas class="canvas" id="myCanvas" width="900" height="700" style="border: 1px solid #333;"></canvas>
+                    <canvas class="canvas" id="myCanvas" width="900" height="700" style="border: 1px solid rgb(180, 180, 180);"></canvas>
 
                     <div class="buttons">
                         <button class="btn btn-success"id="startAnimation">Start</button>
