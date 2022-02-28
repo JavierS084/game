@@ -1,12 +1,11 @@
-var Game = function(x, y, w, h, c){
+var Game = function(x, y, w, h){
     this.x = x;
     this.y = y;
 
     this.width = w;
     this.height = h;
-    this.canvas = c;
 
-    var radius = 10;
+    var radius = 12;
     var dx = 4;
     var dy = 6;
 
